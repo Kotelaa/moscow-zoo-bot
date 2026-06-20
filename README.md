@@ -1,27 +1,78 @@
-🐾 Moscow Zoo Totem Bot
+# 🐾 Moscow Zoo totem bot
+
 A Telegram bot designed for the Moscow Zoo concept. The main goal is to help users discover their "totem animal" through a quiz and encouraging them to participate 
 in the guardianship program.
-Note: This is an educational project. I am not affiliated with the Moscow Zoo. All images and brand assets are used for demonstration purposes only.
 
-What it does
-The Quiz – a 8-question survey using a Finite State Machine (FSM) to determine the user's animal match. It’s built to be smooth – no crashes if you click the wrong button.
-After the quiz, you get a custom result with a photo and a description of your animal. It's designed to be shareable and fun.
-I've added a feature that helps you send result to a staff member of the zoo to ask about how to become a "Guardian" for that specific animal.
-Privacy and Safety: Added a /privacy command so people know exactly what's happening with their data.
-Built on the aiogram 3.25.0 framework, ensuring high performance through asynchronous request handling. That mean that the bot stays fast even if multiple people are using it 
-at the same time.
-Integrated logging and performance monitoring to track errors and response times.
+> **Note:** This is an educational project. I am not affiliated with the Moscow Zoo. All images and brand assets are used for demonstration purposes only.
 
-The Tech Side
-Language: Python 3.14
-Framework: Aiogram 3.25.0 
-State Management: Aiogram FSM 
-Formatting: HTML & aiogram.utils.formatting
-Environment Variables: All secret variables like the Bot Token are kept in a Token file.
-I integrated a monitoring system that logs errors and response times to a file, so I can fix bugs quickly.
+---
 
-How to use it
-Type /start to see the welcome message.
-Use /survey to start the totem quiz.
-Check /privacy if you're curious about data handling.
-Use /contact for official zoo links.
+## Features
+
+- **Totem Quiz** – an 8-question survey using a Finite State Machine (FSM) to determine the user's animal match
+- **Custom results** – each result includes a photo and description of the matched animal, designed to be shareable
+- **Guardianship feature** – after the quiz, users can send their result to a zoo staff member to ask about becoming an animal guardian
+- **Privacy command** – `/privacy` explains exactly what happens with user data
+- **Async performance** – built on Aiogram 3, stays fast even with multiple users at the same time
+- **Monitoring** – integrated logging that tracks errors and response times to a file
+
+---
+
+## Tech Stack
+
+- **Language:** Python 3.14 
+- **Framework:** Aiogram 3.25.0
+- **State Management:** Aiogram FSM
+- **Formatting:** HTML & `aiogram.utils.formatting`
+- **Config:** Environment variables (`.env` / Token file)
+- **Logging:** File-based error and performance logging
+
+---
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `/start` | Welcome message |
+| `/survey` | Start the totem animal quiz |
+| `/privacy` | Data handling information |
+| `/contact` | Official zoo links |
+
+---
+
+## Getting Started
+
+**1. Clone the repository**
+```bash
+git clone https://github.com/Kotelaa/MoscowZooBot.git
+cd MoscowZooBot
+```
+
+**2. Create and activate a virtual environment**
+```bash
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# macOS / Linux
+source venv/bin/activate
+```
+
+**3. Install dependencies**
+```bash
+pip install aiogram
+```
+
+**4. Add your bot token**
+
+Create a `Token.py` file (or `.env` file) and add:
+```python
+TOKEN = "your-telegram-bot-token"
+```
+
+**5. Run the bot**
+```bash
+python main.py
+```
+
