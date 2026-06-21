@@ -44,7 +44,7 @@ in the guardianship program.
 
 **1. Clone the repository**
 ```bash
-git clone https://github.com/Kotelaa/MoscowZooBot.git
+git clone https://github.com/Kotelaa/moscow-zoo-bot
 cd MoscowZooBot
 ```
 
