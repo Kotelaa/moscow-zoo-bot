@@ -13,7 +13,8 @@ def commands_kb():
             '/help',
             '/about',
             '/contact',
-            '/survey']
+            '/survey',
+            '/privacy']
 
     for command in commands:
         keyboard.add(KeyboardButton(text=command))
@@ -59,7 +60,7 @@ def share_keyboard(animal_name):
         text="💙 Поделиться в VK",
         url=f"https://vk.com/share.php?url={bot_link}&title={encoded_text}"))
     keyboard.row(InlineKeyboardButton(
-        text='Узнать больше о опеке',
+        text='🐱  Узнать больше о опеке',
         url='https://moscowzoo.ru/about/guardianship/'))
     keyboard.row(InlineKeyboardButton(
         text="📞 Связаться с сотрудником",

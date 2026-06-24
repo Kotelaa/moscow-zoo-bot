@@ -8,14 +8,16 @@ utils_router = Router()
 
 def add_number(name: str, phone : str =None, mail : str =None):
     """ Add a number to the /contact command """
-    content = [Bold(f'{name}: ')]
+    parts = []
+    parts.append(Bold(f'{name}: '))
+
     if phone:
         # clean_phone = re.sub(r'[^\d+]', '', phone)
-        content.append(f'{phone}')
-        content.append('  ')
+        parts.append(f'{phone}')
+        parts.append('  ')
     if mail:
-        content.append(TextLink(mail, url=f'mail:{mail}'))
-    return as_line(*content)
+        parts.append(TextLink(mail, url=f'mailto:{mail}'))
+    return as_line(*parts)
 
 
 ALL_CONTACTS = [

@@ -1,14 +1,15 @@
 from aiogram import Router, F
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, InlineKeyboardButton
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram.types.reply_keyboard_remove import ReplyKeyboardRemove
 from aiogram.utils.formatting import Bold, as_list, as_line
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from Keyboards import survey_options_kb, share_keyboard
 from quiz_questions import QUIZ_QUESTIONS, RESULTS
-from const import SURVEY_MESSAGE
+from const import SURVEY_MESSAGE, START_SURVEY_MESSAGE
 from TokenData import ADMIN_ID
 
 
@@ -26,11 +27,39 @@ class Quiz(StatesGroup):
 
 
 @router_quiz.message(Command('survey'))
-async def start_survey(message: Message, state: FSMContext):
-    """ Function sets the initial state """
+async def start_survey(message: Message):
+    """ Asks user if he/she wants start survey """
+    kb = InlineKeyboardBuilder()
+    kb.row(InlineKeyboardButton(text='🚀 Начать викторину',
+                                callback_data='run_quiz'))
+    kb.row(InlineKeyboardButton(text='⏰ Приступлю позже',
+                                callback_data='cancel_quiz'))
+
+    await message.answer(START_SURVEY_MESSAGE.as_html(),
+                         reply_markup=kb.as_markup(),
+                         parse_mode='HTML')
+
+
+@router_quiz.callback_query(F.data == 'run_quiz')
+async def run_quiz(callback: CallbackQuery, state: FSMContext):
+    """ Function starts the survey"""
+    await callback.answer()
     await state.set_state(Quiz.asking)
     await state.update_data(**DEFAULT_QUIZ_DATA)
-    await handle_survey(message, state)
+
+    await callback.message.delete()
+    await handle_survey(callback.message, state)
+
+
+@router_quiz.callback_query(F.data == 'cancel_quiz')
+async def cancel_quiz(callback: CallbackQuery, state: FSMContext):
+    """ When the user has decided to postpone the test  """
+    await callback.answer('Жаль, будем ждать вас позже!')
+    await callback.message.edit_text(
+        'Ничего страшного! Вы можете запустить викторину в любое время '
+        'командой /survey. Хорошего дня! ✨'
+    )
+    await state.clear()
 
 
 @router_quiz.message(Quiz.asking)
@@ -111,7 +140,3 @@ async def contact_staff(callback: CallbackQuery, state: FSMContext):
     except Exception as e:
         await callback.answer("Ошибка при отправке заявки.")
         print(f'Ошибка: {e}')
-
-
-
-

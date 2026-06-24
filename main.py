@@ -11,7 +11,7 @@ from aiogram.utils.formatting import Bold, as_list, as_marked_list,  \
 
 from TokenData import TOKEN
 from utils import ALL_CONTACTS, utils_router
-from const import ABOUT_ZOO, ABOUT_CUSTODY, HELP_MESSAGE
+from const import ABOUT_ZOO, ABOUT_CUSTODY, HELP_MESSAGE, PRIVACY_MESSAGE
 from quiz import router_quiz
 from Keyboards import commands_kb, animal_custody_kb, web_kb
 
@@ -32,6 +32,7 @@ async def welcome_message(message: Message):
             '/about',
             '/contact',
             '/survey',
+            '/privacy',
             marker='🐾  '
         )
     )
@@ -69,14 +70,29 @@ async def contact_message(message: Message):
     await message.answer(**content.as_kwargs(), reply_markup=web_kb)
 
 
+@router.message(Command('privacy'))
+async def privacy_message(message: Message):
+    await message.answer(PRIVACY_MESSAGE.as_html(), reply_markup=commands_kb())
+
+
 async def start_bot():
     """ Main function to start the bot """
     bot = Bot(token=TOKEN,
               default=DefaultBotProperties(parse_mode=ParseMode.HTML))
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=[logging.FileHandler("bot_errors.log"),
+                  logging.StreamHandler()]
+    )
+
+    logger = logging.getLogger(__name__)
+
+
     dp = Dispatcher()
     dp.include_router(router)
     dp.include_router(router_quiz)
     dp.include_router(utils_router)
+
     await dp.start_polling(bot)
 
 
